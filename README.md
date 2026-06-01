@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kube2net — Comunicaciones unificadas para el piso financiero</title>
+<meta name="description" content="Plataforma cloud nativa en Kubernetes que unifica torretas financieras, conferencias, intercom, Hoot & Holler y grabación con IA — con cumplimiento normativo de extremo a extremo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ============================================================
+   Print styles — Kube2net landing
+   ============================================================ */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #0B0F1A !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Hide things that don't make sense in print */
+  .nav,
+  .tweaks-toggle,
+  .tweaks-panel,
+  .float-shot,
+  .hero-shot { transform: none !important; }
+
+  .nav { display: none !important; }
+  .tweaks-toggle,
+  .tweaks-panel { display: none !important; }
+  .float-shot { display: none !important; }
+
+  /* Reset section padding for print */
+  .section,
+  .section-tight,
+  .hero,
+  .logos,
+  .cta {
+    padding: 24px 0 !important;
+  }
+
+  .container,
+  .container-wide {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  /* Page-break control */
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .section,
+  .section-tight {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  /* Force page break before key sections */
+  #modelos,
+  #plataforma,
+  #grabacion,
+  #cumplimiento,
+  #seguridad,
+  #specs,
+  #capturas,
+  #funcionalidades,
+  #contacto {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  /* Keep section heads with their content */
+  .section-head { break-after: avoid; page-break-after: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+
+  /* Hero — vertical stack */
+  .hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .hero h1 { font-size: 40px !important; }
+  .hero-meta { gap: 18px !important; }
+
+  /* Console / shot frames — tighten */
+  .shot,
+  .recdet,
+  .audit-image-shot,
+  .arch-image-frame {
+    box-shadow: none !important;
+    border-radius: 8px !important;
+  }
+  .shot-img,
+  .recdet-img,
+  .audit-image-shot img,
+  .arch-image-frame img,
+  .gallery-img img,
+  .gw-photo img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Models — stack panel below tabs */
+  .models-shell { grid-template-columns: 1fr !important; }
+  .models-tabs { display: none !important; }
+  .model-panel { grid-template-columns: 1fr !important; padding: 18px !important; min-height: auto !important; break-inside: avoid; }
+
+  /* Feature grid — 2 cols max */
+  .feat-grid { grid-template-columns: 1fr 1fr !important; }
+  .feat-cell { min-height: auto !important; padding: 20px !important; break-inside: avoid; }
+
+  /* AI Recording / compliance / security — stack */
+  .airec-grid,
+  .comp-grid,
+  .sec-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+
+  /* Specs side-by-side ok */
+  .specs-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  .spec-card { padding: 18px !important; break-inside: avoid; }
+  .gw-card { grid-template-columns: 1fr 1fr !important; break-inside: avoid; }
+
+  /* Gallery */
+  .gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  .gallery-item { break-inside: avoid; }
+
+  /* Compliance panel: dark backgrounds keep with exact-color */
+  .compliance,
+  .cta-card {
+    background: #0B0F1A !important;
+    color: #fff !important;
+  }
+  .compliance .h-section,
+  .compliance .lede,
+  .compliance .eyebrow,
+  .compliance .comp-list .name,
+  .compliance .comp-list .desc,
+  .compliance .comp-list .badge,
+  .compliance .audit-panel h4,
+  .compliance .audit-panel .audit-row .event,
+  .compliance .audit-panel .audit-row .ts,
+  .cta-card h2,
+  .cta-card p,
+  .contact-card .name,
+  .contact-card .title,
+  .contact-card .role,
+  .contact-card .lines a,
+  .contact-card .lines span {
+    color: #fff !important;
+  }
+
+  /* Feature table */
+  .ftable-controls { display: none !important; }
+  .ftable { border-radius: 8px !important; }
+  .ftable-row {
+    grid-template-columns: 200px 1fr 100px !important;
+    padding: 12px 16px !important;
+    gap: 14px !important;
+    break-inside: avoid;
+  }
+  .ftable-row.hidden { display: grid !important; } /* show all in print */
+
+  /* CTA card */
+  .cta-card { grid-template-columns: 1.3fr 1fr !important; padding: 32px !important; }
+  .cta-card .actions a { color: #fff !important; }
+  .cta-card .btn-primary { background: #F47820 !important; color: #fff !important; }
+
+  /* Footer */
+  .footer { padding: 24px 0 16px !important; break-before: avoid; }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr !important; gap: 18px !important; }
+
+  /* Force reveal animations to be visible */
+  .reveal { opacity: 1 !important; transform: none !important; }
+
+  /* Typography sizing for print */
+  body { font-size: 12pt; }
+  .h-display { font-size: 36pt !important; line-height: 1.05 !important; }
+  .h-section { font-size: 24pt !important; line-height: 1.1 !important; }
+  .h-card { font-size: 14pt !important; }
+  .lede { font-size: 12pt !important; }
+
+  /* Links: no fancy decoration */
+  a { color: inherit !important; text-decoration: none !important; }
+
+  /* Remove sticky positioning */
+  .nav { position: static !important; }
+}
+
+/* Slightly tighter on screen so print preview reflects accurately */
+@media screen {
+  body { background: #f5f5f1; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+============================================================ -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <img class="brand-mark-img" src="assets/image19.png" alt="Kube2net">
+      <span>Kube<span style="color: var(--accent);">2</span>net</span>
+    </a>
+    <div class="nav-links">
+      <a href="#plataforma">Plataforma</a>
+      <a href="#modelos">Modelos</a>
+      <a href="#grabacion">Grabación IA</a>
+      <a href="#seguridad">Seguridad</a>
+      <a href="#capturas">Capturas</a>
+      <a href="#funcionalidades">Funcionalidades</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#contacto" class="btn btn-ghost">Hablar con ventas</a>
+      <a href="#contacto" class="btn btn-primary">Solicitar Demo
+        <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Plataforma cloud · Kubernetes nativo</span>
+      <h1 class="h-display">Comunicaciones unificadas para el <mark>piso financiero</mark>, sin compromisos.</h1>
+      <p class="lede">Torretas por software, conferencias, intercom, Hoot &amp; Holler, hotlines y telefonía tradicional — en una sola plataforma. Diseñada para mesas de trading, brokers y centros de despacho que exigen cumplimiento, movilidad y disponibilidad continua.</p>
+      <div class="hero-ctas">
+        <a href="#contacto" class="btn btn-accent btn-lg">Solicitar Demo
+          <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#funcionalidades" class="btn btn-ghost btn-lg">Ver capacidades</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="num">24/7/365</span>
+          <span class="lbl">Monitoreo activo</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="num">WebRTC</span>
+          <span class="lbl">Cifrado extremo a extremo</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="num">∞</span>
+          <span class="lbl">Conversaciones simultáneas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero product shot (real screenshot) -->
+    <div class="hero-shot-wrap">
+      <div class="shot hero-shot">
+        <div class="shot-titlebar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="url">k2n.app/workspace · sesión segura</span>
+          <span class="live"><span class="pip"></span>EN LÍNEA</span>
+        </div>
+        <img class="shot-img" src="assets/image7.png" alt="Kube2net — Panel View con líneas privadas, hoots, conferencias e intercom" />
+      </div>
+
+      <div class="float-shot hero-float-1">
+        <img src="assets/image2.png" alt="Login Kube2net" />
+      </div>
+
+      <div class="float-shot hero-float-2">
+        <img src="assets/image11.png" alt="Historial de llamadas Kube2net" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     LOGOS / TRUST
+============================================================ -->
+<section class="logos">
+  <div class="container">
+    <div class="logos-lead">Interopera con la infraestructura que ya tienes</div>
+    <div class="logos-row">
+      <div class="logo-slot">IPC<small>Unigy / IQMX</small></div>
+      <div class="logo-slot">IPTrade<small>Turret</small></div>
+      <div class="logo-slot">Microsoft Teams<small>Federación</small></div>
+      <div class="logo-slot">Zoom<small>Conferencia</small></div>
+      <div class="logo-slot">Google Meet<small>Conferencia</small></div>
+      <div class="logo-slot">PBX / SBC<small>SIP trunking</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODELOS DE ADQUISICIÓN
+============================================================ -->
+<section class="section models" id="modelos">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Modelos de adquisición</span>
+      <h2 class="h-section">Adopta solo lo que tu mesa necesita.</h2>
+      <p class="lede">Kube2net es modular. Empieza por una pieza y crece — sin reemplazar lo que ya funciona en tu piso de operación.</p>
+    </div>
+
+    <div class="models-shell reveal" id="models-shell">
+      <div class="models-tabs" role="tablist">
+        <button class="model-tab active" data-model="0" role="tab">
+          <span class="num">01</span>
+          <span>
+            <h4 class="title">Solo Networking</h4>
+            <p class="sub">Complementa torretas IPC o IPTrade existentes con la red de Kube2net.</p>
+          </span>
+        </button>
+        <button class="model-tab" data-model="1" role="tab">
+          <span class="num">02</span>
+          <span>
+            <h4 class="title">Comunicaciones + Consolas</h4>
+            <p class="sub">Respaldo y movilidad para clientes con torretas físicas existentes.</p>
+          </span>
+        </button>
+        <button class="model-tab" data-model="2" role="tab">
+          <span class="num">03</span>
+          <span>
+            <h4 class="title">Gateway + Torretas K2N</h4>
+            <p class="sub">Integra Kube2net con tu PBX o SBC actual mediante el K2N Gateway.</p>
+          </span>
+        </button>
+        <button class="model-tab" data-model="3" role="tab">
+          <span class="num">04</span>
+          <span>
+            <h4 class="title">Plataforma completa</h4>
+            <p class="sub">Torretas por software, red, gateway y grabación — todo en la nube de K2N.</p>
+          </span>
+        </button>
+      </div>
+
+      <div class="model-panel" id="model-panel">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PLATAFORMA UNIFICADA
+============================================================ -->
+<section class="section uplatform" id="plataforma">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Plataforma unificada</span>
+      <h2 class="h-section">Una sola experiencia, todos los canales.</h2>
+      <p class="lede">Conferencia, intercom, hotline, telefonía tradicional y mensajería conviven en la misma consola — con la presencia y prioridad que tu mesa ya entiende.</p>
+    </div>
+
+    <div class="feat-grid reveal">
+      <div class="feat-cell cyan">
+        <span class="tag">01</span>
+        <div class="glyph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h4>Conferencia</h4>
+        <p>Crea líneas privadas con número externo y participantes ilimitados. Agrega tonos de marcación en caliente, sin cortar la conversación.</p>
+      </div>
+
+      <div class="feat-cell amber">
+        <span class="tag">02</span>
+        <div class="glyph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h3l3-9 6 18 3-9h3"/></svg>
+        </div>
+        <h4>Hoot &amp; Holler</h4>
+        <p>Canales abiertos para anuncios simultáneos al floor. Push-to-talk, push-to-mute o latch — con calidad de voz medida en tiempo real.</p>
+      </div>
+
+      <div class="feat-cell violet">
+        <span class="tag">03</span>
+        <div class="glyph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"/></svg>
+        </div>
+        <h4>Intercom</h4>
+        <p>Llamadas internas sin líneas externas, en modo push-to-talk o latch. Cualquier usuario autenticado con extensión asignada.</p>
+      </div>
+
+      <div class="feat-cell">
+        <span class="tag">04</span>
+        <div class="glyph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <h4>Hotline &amp; líneas privadas</h4>
+        <p>Conexión instantánea con un solo botón. Prioridad por color, alertas visuales y sonoras configurables por usuario.</p>
+      </div>
+
+      <div class="feat-cell green">
+        <span class="tag">05</span>
+        <div class="glyph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <h4>Telefonía tradicional</h4>
+        <p>Llamadas SIP de entrada y salida, integración nativa con PBX o SBC mediante K2N Gateway. Transferencia, desvío, grupos de búsqueda.</p>
+      </div>
+
+      <div class="feat-cell red">
+        <span class="tag">06</span>
+        <div class="glyph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h4>Sin fronteras geográficas</h4>
+        <p>Comunicaciones simultáneas ilimitadas en tiempo real, federando múltiples sedes en un solo sistema centralizado y resiliente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GRABACIÓN MULTI-PLATAFORMA CON IA
+============================================================ -->
+<section class="section" id="grabacion">
+  <div class="container">
+    <div class="airec-grid">
+      <div class="reveal">
+        <span class="eyebrow">Grabación impulsada por IA</span>
+        <h2 class="h-section" style="margin-top: 16px;">Cada conversación, capturada, transcrita y auditada.</h2>
+        <p class="lede" style="margin-top: 16px;">Kube2net captura interacciones de todos los canales en tiempo real, las transcribe y detecta proactivamente riesgos de cumplimiento usando inteligencia artificial.</p>
+        <ul class="airec-bullets">
+          <li>
+            <span class="num">01</span>
+            <div>
+              <h4>Transcripción y resumen automático</h4>
+              <p>Convierte cada llamada o conferencia en texto buscable. La IA genera un resumen ejecutivo y lo distribuye solo a usuarios autorizados.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">02</span>
+            <div>
+              <h4>Detección de riesgos en tiempo real</h4>
+              <p>Identifica anomalías, lenguaje sensible y patrones que comprometen la adherencia regulatoria, antes de que escalen.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">03</span>
+            <div>
+              <h4>Almacenamiento redundante</h4>
+              <p>Esquemas en la nube o local con doble sitio. Cumple con la normatividad financiera de la mayoría de jurisdicciones.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">04</span>
+            <div>
+              <h4>Búsqueda por metadata o por contenido</h4>
+              <p>Filtra por nombre, conferencia, duración, fecha, estado o usuario — o busca palabras y frases exactas dentro de cualquier grabación.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <div class="recdet">
+          <div class="recdet-head">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="url">k2n.app/recordings/1779211001.9641</span>
+          </div>
+          <img class="recdet-img" src="assets/image13.png" alt="Kube2net — Recording Details con metadata completa, IA Summary y transcripción" />
+        </div>
+
+        <div class="shot" style="margin-top: 24px;">
+          <div class="shot-titlebar">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="url">k2n.app/recordings · AI Transcription Search</span>
+            <span class="live"><span class="pip"></span>197 GRABACIONES</span>
+          </div>
+          <img class="shot-img" src="assets/image12.png" alt="Búsqueda multi-tenant con transcripción AI sobre grabaciones" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CUMPLIMIENTO Y AUDITORÍA
+============================================================ -->
+<section class="section compliance" id="cumplimiento">
+  <div class="container">
+    <div class="comp-grid">
+      <div class="reveal">
+        <span class="eyebrow">Cumplimiento y auditoría</span>
+        <h2 class="h-section" style="margin-top: 16px;">Evidencia clara cuando cada segundo cuenta.</h2>
+        <p class="lede" style="margin-top: 16px;">En entornos de alta presión, Kube2net entrega trazabilidad inmutable para disputas, auditorías regulatorias e investigaciones — sin fricción operativa.</p>
+        <ul class="comp-list">
+          <li>
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+            <span>
+              <span class="name">Trazabilidad de auditoría</span>
+              <span class="desc">Log inmutable de cada llamada, acceso, configuración y cambio de estado.</span>
+            </span>
+            <span class="badge">SOX · MiFID II</span>
+          </li>
+          <li>
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+            <span>
+              <span class="name">Políticas de retención</span>
+              <span class="desc">Configurables por canal, usuario, jurisdicción o caso de negocio.</span>
+            </span>
+            <span class="badge">7 años+</span>
+          </li>
+          <li>
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z"/><polyline points="9 11 12 14 22 4"/></svg></span>
+            <span>
+              <span class="name">Controles de acceso granulares</span>
+              <span class="desc">Roles, atribución por mesa, autenticación corporativa, MFA.</span>
+            </span>
+            <span class="badge">RBAC · SSO</span>
+          </li>
+          <li>
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></span>
+            <span>
+              <span class="name">Detección de anomalías</span>
+              <span class="desc">Modelos de IA identifican patrones de comportamiento atípico para revisión humana.</span>
+            </span>
+            <span class="badge">AI · NLP</span>
+          </li>
+          <li>
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+            <span>
+              <span class="name">Preparación para auditoría</span>
+              <span class="desc">Exporta evidencia formateada, cadenas de custodia y resúmenes auditables.</span>
+            </span>
+            <span class="badge">e-Discovery</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <div class="audit-image-shot">
+          <div class="shot-titlebar" style="background: linear-gradient(180deg, #141B2A, #0E1320); border-bottom: 1px solid #1F2536;">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="url">k2n.app/history · audit log</span>
+            <span class="live"><span class="pip"></span>50 EVENTOS</span>
+          </div>
+          <img src="assets/image11.png" alt="Historial de llamadas Kube2net con filtros por categoría" />
+        </div>
+
+        <div class="audit-panel" style="margin-top: 20px;">
+          <h4><span class="pip"></span>Trazabilidad — campos auditados</h4>
+          <div class="audit-row">
+            <span class="ts">CALL_ID</span>
+            <span class="event">Identificador único e inmutable</span>
+            <span class="status">REQ</span>
+          </div>
+          <div class="audit-row">
+            <span class="ts">DURATION</span>
+            <span class="event">Inicio / fin / tiempo total medido en servidor</span>
+            <span class="status">REQ</span>
+          </div>
+          <div class="audit-row">
+            <span class="ts">PARTIES</span>
+            <span class="event">Origen, destino y participantes de conferencia</span>
+            <span class="status">REQ</span>
+          </div>
+          <div class="audit-row">
+            <span class="ts">STORAGE</span>
+            <span class="event">URLs de doble almacenamiento (cloud + on-prem)</span>
+            <span class="status">REQ</span>
+          </div>
+          <div class="audit-row">
+            <span class="ts">AI_TAGS</span>
+            <span class="event">Score de riesgo, flags de compliance</span>
+            <span class="status warn">AI</span>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SEGURIDAD Y ARQUITECTURA K8S
+============================================================ -->
+<section class="section" id="seguridad">
+  <div class="container">
+    <div class="sec-grid">
+      <div class="reveal">
+        <span class="eyebrow">Seguridad y arquitectura</span>
+        <h2 class="h-section" style="margin-top: 16px;">Cloud nativo, orquestado en Kubernetes.</h2>
+        <p class="lede" style="margin-top: 16px;">Alta disponibilidad, escalamiento automático y actualizaciones sin interrupciones — con seguridad integrada desde el núcleo, no como capa añadida.</p>
+
+        <div class="sec-points">
+          <div class="sec-point">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+              <h4>Cifrado de extremo a extremo</h4>
+              <p>WebRTC SRTP para todas las llamadas; TLS 1.3 en el plano de control; AES-256 en grabaciones almacenadas.</p>
+            </div>
+          </div>
+          <div class="sec-point">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <div>
+              <h4>Kubernetes resiliente</h4>
+              <p>Orquestación de contenedores con escalado automático, despliegues sin downtime y aislamiento de tenant por namespace.</p>
+            </div>
+          </div>
+          <div class="sec-point">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+              <h4>K2N Gateway hardenizado</h4>
+              <p>CentOS Stream 9 hardenizado por K2N, doble interfaz LAN, firewall con zonas dinámicas, OpenVPN site-to-site con SSL/TLS.</p>
+            </div>
+          </div>
+          <div class="sec-point">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <h4>Monitoreo 24×7×365</h4>
+              <p>Métricas continuas, umbrales inteligentes, análisis de causa raíz, predicción de tendencias y notificaciones automatizadas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="arch-image-frame">
+          <div class="arch-h" style="margin-bottom: 14px;">
+            <h4>Arquitectura de plataforma — diagrama oficial</h4>
+            <span class="arch-tag"><span class="pip"></span>Kube2net Cloud</span>
+          </div>
+          <img src="assets/image18.png" alt="Arquitectura Kube2net: Gateway K2NN100, SBC en la nube, Frontroom, brokers internacionales vía FLEXENET, y PSTN" />
+          <div class="arch-legend">
+            <span class="arch-legend-item"><span class="arch-legend-swatch"></span>VPN segura</span>
+            <span class="arch-legend-item"><span class="arch-legend-swatch" style="background: #E2DBC5;"></span>SIP Trunk</span>
+            <span class="arch-legend-item"><span class="arch-legend-swatch solid-blue-dash"></span>RTP / SRTP</span>
+            <span class="arch-legend-item"><span class="arch-legend-swatch" style="background: repeating-linear-gradient(90deg, #DC2626 0 4px, transparent 4px 7px); height: 2px;"></span>SIP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SPECS
+============================================================ -->
+<section class="section-tight" id="specs">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Requerimientos</span>
+      <h2 class="h-section">Lo que necesitas para correr Kube2net.</h2>
+    </div>
+    <div class="specs-grid reveal">
+      <div class="spec-card">
+        <span class="stag">Cliente</span>
+        <h4>Estación de trabajo del trader</h4>
+        <ul class="spec-list" style="margin-top: 18px;">
+          <li><span class="k">Sistema operativo</span><span class="v">Windows 11 / macOS</span></li>
+          <li><span class="k">Procesador</span><span class="v">Intel i3 11ª gen / Ryzen 3 4300G+</span></li>
+          <li><span class="k">RAM</span><span class="v">8 GB</span></li>
+          <li><span class="k">Navegador</span><span class="v">Chrome, Edge, Safari · última versión</span></li>
+          <li><span class="k">Audio</span><span class="v">Bocinas + micrófono (2 dispositivos recomendado)</span></li>
+          <li><span class="k">Ancho de banda</span><span class="v">2 Mbps estable mínimo</span></li>
+        </ul>
+      </div>
+      <div class="spec-card">
+        <span class="stag">K2N Gateway</span>
+        <h4>Integración con infraestructura legacy</h4>
+        <ul class="spec-list" style="margin-top: 18px;">
+          <li><span class="k">Sistema</span><span class="v">CentOS Stream 9 hardenizado</span></li>
+          <li><span class="k">Interfaces de red</span><span class="v">2× LAN — pública + privada</span></li>
+          <li><span class="k">Firewall</span><span class="v">FirewallD sobre nftables</span></li>
+          <li><span class="k">Velocidad por puerto</span><span class="v">1000 Mbps</span></li>
+          <li><span class="k">VPN</span><span class="v">OpenVPN · SSL/TLS</span></li>
+          <li><span class="k">Conectividad</span><span class="v">PBX, SBC, líneas analógicas, SIP, grabación</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="gw-card reveal">
+      <div class="gw-photo">
+        <img src="assets/image14.png" alt="K2N Gateway K2NN100 — appliance hardware con LCD frontal, doble LAN, HDMI y USB" />
+      </div>
+      <div class="gw-info">
+        <span class="stag">Hardware K2NN100</span>
+        <h4>K2N Gateway — appliance dedicado</h4>
+        <p>Mini-appliance con LCD frontal, doble interfaz LAN gigabit, doble HDMI 4K, USB 3.0 y audio jack. Diseñado para vivir en el rack del piso financiero, aislando la red sensible de las conexiones externas.</p>
+        <ul class="spec-list">
+          <li><span class="k">Procesador</span><span class="v">Intel Alder Lake-N N100 · 4C/4T · turbo 3.4 GHz</span></li>
+          <li><span class="k">Gráficos</span><span class="v">Intel UHD · 750 MHz · 24 EU</span></li>
+          <li><span class="k">Memoria</span><span class="v">16 GB DDR4 2666 MHz (SO-DIMM)</span></li>
+          <li><span class="k">Almacenamiento</span><span class="v">1 TB M.2 2280 SATA SSD · slot adicional NVMe</span></li>
+          <li><span class="k">Conectividad</span><span class="v">2× RJ45 Gigabit · WiFi 5 · BT 4.2</span></li>
+          <li><span class="k">Salidas</span><span class="v">2× HDMI 2.0 (4K@60Hz) · 2× USB 3.0 · 2× USB 2.0</span></li>
+          <li><span class="k">Alimentación</span><span class="v">DC 12V–4A</span></li>
+          <li><span class="k">Dimensiones</span><span class="v">123.8 × 128 × 40.9 mm</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GALLERY — capturas de producto reales
+============================================================ -->
+<section class="section gallery" id="capturas">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Vistas del producto</span>
+      <h2 class="h-section">Capturas reales de Kube2net en operación.</h2>
+      <p class="lede">Todas las pantallas que ves aquí son de la plataforma viva. Sin renders, sin maquetas.</p>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-img"><img src="assets/image6.png" alt="My Conferences"></div>
+        <div class="gallery-caption">
+          <h5>My Conferences</h5>
+          <p>Vista global de conferencias asignadas, con búsqueda, estado y rol.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img"><img src="assets/image11.png" alt="Call History"></div>
+        <div class="gallery-caption">
+          <h5>Call History</h5>
+          <p>Historial filtrable: todas, perdidas, contestadas, rechazadas, frecuentes.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img"><img src="assets/image12.png" alt="Recordings search with AI"></div>
+        <div class="gallery-caption">
+          <h5>Search Recordings · AI</h5>
+          <p>Multi-tenant con búsqueda por metadata o transcripción AI sobre el contenido.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img"><img src="assets/image13.png" alt="Recording Details"></div>
+        <div class="gallery-caption">
+          <h5>Recording Details</h5>
+          <p>Metadata completa, transcript, AI Summary y compartido controlado.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img"><img src="assets/image9.png" alt="Configure Button"></div>
+        <div class="gallery-caption">
+          <h5>Configure Button</h5>
+          <p>Cada botón: tipo de línea, etiqueta y modo de habla (PTT, latch).</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img"><img src="assets/image4.png" alt="Create Conference"></div>
+        <div class="gallery-caption">
+          <h5>Create Conference</h5>
+          <p>Crea líneas privadas con dial-out externo e invitación de participantes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FUNCIONALIDADES — TABLA
+============================================================ -->
+<section class="section ftable-wrap" id="funcionalidades">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Funcionalidades</span>
+      <h2 class="h-section">Todo lo que esperas de una torreta, sin el hardware.</h2>
+      <p class="lede">35+ capacidades probadas, configurables por usuario, mesa o jurisdicción. Filtra por categoría o busca por palabra clave.</p>
+    </div>
+
+    <div class="ftable-controls reveal">
+      <div class="search-input">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="ft-search" placeholder="Buscar funcionalidad — ej. conferencia, intercom, grabación…">
+      </div>
+      <div class="filter-chips" id="ft-chips"></div>
+    </div>
+
+    <div class="ftable" id="ftable">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA
+============================================================ -->
+<section class="cta" id="contacto">
+  <div class="container">
+    <div class="cta-card reveal">
+      <div>
+        <h2>¿Tu mesa lista para una plataforma sin compromisos?</h2>
+        <p>Agenda una sesión técnica de 30 minutos. Te mostramos Kube2net con tu flujo real — sin presentaciones genéricas, solo lo que opera tu desk.</p>
+        <div class="actions">
+          <a href="mailto:apalacios@teltech-inc.com?subject=Solicitar%20demo%20Kube2net" class="btn btn-primary btn-lg">Solicitar Demo
+            <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="tel:+19727433325" class="btn btn-ghost btn-lg">Llamar ahora</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <span class="role">Contacto comercial</span>
+        <div class="name">Antonio Palacios</div>
+        <div class="title">CEO · Teltech Inc.</div>
+        <div class="lines">
+          <a href="mailto:apalacios@teltech-inc.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            apalacios@teltech-inc.com
+          </a>
+          <a href="tel:+19727433325">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +1 (972) 743-3325
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#" class="brand">
+          <img class="brand-mark-img" src="assets/image19.png" alt="Kube2net" style="width: 32px; height: 32px;">
+          <span>Kube<span style="color: var(--accent);">2</span>net</span>
+        </a>
+        <p class="fbrand-desc">Plataforma unificada de comunicaciones para el piso financiero — diseñada para movilidad, cumplimiento y resiliencia operativa.</p>
+      </div>
+      <div>
+        <h5>Plataforma</h5>
+        <ul>
+          <li><a href="#plataforma">Comunicaciones</a></li>
+          <li><a href="#grabacion">Grabación con IA</a></li>
+          <li><a href="#cumplimiento">Cumplimiento</a></li>
+          <li><a href="#seguridad">Seguridad</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Producto</h5>
+        <ul>
+          <li><a href="#modelos">Modelos de adquisición</a></li>
+          <li><a href="#funcionalidades">Funcionalidades</a></li>
+          <li><a href="#specs">Requerimientos técnicos</a></li>
+          <li><a href="#contacto">Demo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:apalacios@teltech-inc.com">apalacios@teltech-inc.com</a></li>
+          <li><a href="tel:+19727433325">+1 (972) 743-3325</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Teltech Inc. · Kube2net™</span>
+      <span>cloud · kubernetes · cumplimiento</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     TWEAKS PANEL
+============================================================ -->
+<button class="tweaks-toggle" id="tweaks-toggle">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  Tweaks
+</button>
+<div class="tweaks-panel" id="tweaks-panel">
+  <button class="tweaks-close" id="tweaks-close" aria-label="Cerrar">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <h5 class="tweaks-title"><span class="pip"></span>Tweaks</h5>
+
+  <h6>Color de acento</h6>
+  <div class="swatch-row" id="theme-row">
+    <button class="swatch active" data-theme="orange" style="background:#F47820" title="Kube2net Orange"></button>
+    <button class="swatch" data-theme="amber" style="background:#D97706" title="Amber"></button>
+    <button class="swatch" data-theme="graphite" style="background:#1F2937" title="Graphite"></button>
+    <button class="swatch" data-theme="crimson" style="background:#DC2626" title="Crimson"></button>
+  </div>
+
+  <h6>Modo</h6>
+  <div class="swatch-row" id="mode-row">
+    <button class="swatch active" data-mode="light" style="background:#FFF; border-color: #D2D1CB" title="Claro"></button>
+    <button class="swatch" data-mode="dark" style="background:#0A0E18" title="Oscuro"></button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+(async function autoPrint() {
+  try {
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+    // Wait for all images to load (or fail)
+    const imgs = Array.from(document.images);
+    await Promise.all(imgs.map(img => img.complete ? Promise.resolve() : new Promise(res => {
+      img.addEventListener('load', res, { once: true });
+      img.addEventListener('error', res, { once: true });
+    })));
+    await new Promise(r => setTimeout(r, 500));
+    window.print();
+  } catch (e) {
+    setTimeout(() => window.print(), 800);
+  }
+})();
+</script>
+</body>
+</html>
